@@ -41,7 +41,15 @@ namespace Business.Concrete
 
         public void Delete(Car entity)
         {
-            _carDal.Delete(entity);
+            
+            if (_carDal.Get(c => c.Id ==entity.Id ) == null)
+            {
+                Console.WriteLine("verdiginiz id kullanilmiyor {0} ",entity.Id);
+            }
+            else
+            {
+                _carDal.Delete(entity);
+            }
         }
 
       
