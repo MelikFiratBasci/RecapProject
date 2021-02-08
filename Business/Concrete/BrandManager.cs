@@ -17,7 +17,7 @@ namespace Business.Concrete
         }
         public void Add(Brand entity)
         {
-            if (entity.BrandName.Length <2 )
+            if (entity.BrandName.Length <= 2 )
             {
                 Console.WriteLine("Marka adi 2 karakterden buyuk olmalidir. ");
             }
