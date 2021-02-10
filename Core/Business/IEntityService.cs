@@ -1,11 +1,10 @@
-﻿using Entity.Abstract;
-using Entity.Concrete;
+﻿using Core.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Text;
 
-namespace Business.Abstract
+namespace Core.Business
 {
     public interface IEntityService <T> where T : class,IEntity,new()
     {
