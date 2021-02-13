@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Core.Constants;
+using Core.Utilities.Results;
+using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
 using Entity.Concrete;
 using System;
@@ -15,11 +18,11 @@ namespace Business.Concrete
         {
             _brandDal = brandDal; 
         }
-        public void Add(Brand entity)
+        public IResult Add(Brand entity)
         {
             if (entity.BrandName.Length <= 2 )
             {
-                Console.WriteLine("Marka adi 2 karakterden buyuk olmalidir. ");
+                return new ErorResult(Messages.NameEror);
             }
             else
             {
@@ -27,41 +30,44 @@ namespace Business.Concrete
                 if (_brandDal.Get(a => a.BrandId == entity.BrandId) ==null)
                 {
                     _brandDal.Add(entity);
+                    return new SuccessResult();
 
                 }
                 else
                 {
-                    Console.WriteLine("Daha Onceden kayitli ID ");
+                    return new ErorResult(Messages.IdEror);
                 }
             }
         }
 
-        public void Delete(Brand entity)
+        public IResult Delete(Brand entity)
         {
             _brandDal.Delete(entity);
+            return new SuccessResult();
         }
 
-        public Brand Get(int Id)
+        public IDataResult<Brand> Get(int Id)
         {
-            return _brandDal.Get(b =>b.BrandId==Id );
+            return new SuccessDataResult<Brand>( _brandDal.Get(b =>b.BrandId==Id ));
         }
 
-        public List<Brand> GetAll()
+        public IDataResult<List<Brand>> GetAll()
         {
-            return _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
 
         }
 
-        public void Update(Brand entity)
+        public IResult Update(Brand entity)
         {
             if (entity.BrandName.Length > 2)
             {
                 _brandDal.Update(entity);
-                Console.WriteLine("guncellendi");
+                return new SuccessResult(Messages.ProductUpdated);
+
             }
             else
             {
-                Console.WriteLine("Marka Adi 2 karakterden kucuk olamaz.");
+                return new SuccessResult(Messages.NameEror);
             }
         }
     }

@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Core.Constants;
+using Core.Utilities.Results;
+using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
 using Entity.Concrete;
 using System;
@@ -16,49 +19,53 @@ namespace Business.Concrete
             _colorDal = colorDal;
         }
 
-        public void Add(Color entity)
+        public IResult Add(Color entity)
         {
             if (_colorDal.Get(c => c.ColorId == entity.ColorId) == null)
             {
                 _colorDal.Add(entity);
+                return new SuccessResult();
             }
             else
             {
-                Console.WriteLine("Daha once kayitli Id ");
+                return new ErorResult(Messages.IdEror);
             }
         }
 
-        public void Delete(Color entity)
+        public IResult Delete(Color entity)
         {
             if (_colorDal.Get(c => c.ColorId == entity.ColorId) == null)
             {
-                Console.WriteLine("Hatali islem" );
+                return new ErorResult(Messages.IdEror);
             }
             else
             {
                 _colorDal.Delete(entity);
+                return new SuccessResult();
             }
         }
 
-        public Color Get(int Id)
+        public IDataResult<Color>Get(int Id)
         {
-            return _colorDal.Get(c => c.ColorId == Id);
+            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == Id));
         }
 
-        public List<Color> GetAll()
+        public IDataResult<List<Color>> GetAll()
         {
-            return _colorDal.GetAll();
+            return new SuccessDataResult<List<Color>>( _colorDal.GetAll());
+
         }
 
-        public void Update(Color entity)
+        public IResult Update(Color entity)
         {
             if (_colorDal.Get(c=> c.ColorId == entity.ColorId) == null)
             {
-                Console.WriteLine("Hatali islem");
+                return new ErorResult(Messages.IdEror);
             }
             else
             {
                 _colorDal.Update(entity);
+                return new SuccessResult();
             }
         }
     }

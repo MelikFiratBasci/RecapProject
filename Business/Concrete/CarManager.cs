@@ -1,4 +1,7 @@
 ﻿using Business.Abstract;
+using Core.Constants;
+using Core.Utilities.Results;
+using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
 using Entity.Concrete;
 using Entity.DTOs;
@@ -18,7 +21,7 @@ namespace Business.Concrete
         }
 
 
-        public void Add(Car entity)
+        public IResult Add(Car entity)
         {
 
             if (entity.DailyPrice > 0)
@@ -28,67 +31,70 @@ namespace Business.Concrete
                 {
 
                     _carDal.Add(entity);
-                    Console.WriteLine("Araba eklendi! ");
+                   
+                    return new Result(true, Messages.ProductAdded);
                 }
                 else
                 {
-                    Console.WriteLine("Daha Onceden kayitli ID ");
+                    return new Result(false, Messages.IdEror);
                 }
             }
             else
             {
-                Console.WriteLine("Günlük Fiyat 0 dan büyük olmalıdır!");
+
+                return new Result(false, Messages.PriceEror);
             }
         }
 
-        public void Delete(Car entity)
+        public IResult Delete(Car entity)
         {
             
             if (_carDal.Get(c => c.Id ==entity.Id ) == null)
             {
-                Console.WriteLine("verdiginiz id kullanilmiyor {0} ",entity.Id);
+                return new Result(false, Messages.IdEror);
             }
             else
             {
-                _carDal.Delete(entity);
+                return new Result(true, Messages.ProductDeleted);
             }
         }
 
       
 
-        public Car Get(int Id)
+        public IDataResult<Car> Get(int Id)
         {
-            return _carDal.Get(c => c.Id == Id);
+            return new SuccessDataResult<Car>(_carDal.Get(c => c.Id == Id));
         }
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
-        public List<Car> GetByBrandId(int brandId)
+        public IDataResult<List<Car>> GetByBrandId(int brandId)
         {
-            return _carDal.GetAll(c => c.BrandId == brandId);
+            return new SuccessDataResult<List<Car>>( _carDal.GetAll(c => c.BrandId == brandId));
         } 
-        public List<Car> GetByColorId(int colorId)
+        public IDataResult<List<Car>> GetByColorId(int colorId)
         {
-            return _carDal.GetAll(c => c.ColorId == colorId);
+            return  new SuccessDataResult<List<Car>>(_carDal.GetAll(c => c.ColorId == colorId));
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return _carDal.GetCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
 
-        public void Update(Car entity)
+        public IResult Update(Car entity)
         {
             if (entity.DailyPrice>0)
             {
                 _carDal.Update(entity);
-                Console.WriteLine("Guncelleme tamamlandi");
+                return new SuccessResult(Messages.ProductUpdated);
             }
             else
             {
-                Console.WriteLine("Gunluk ucret 0 dan buyuk olmalidir ");
+                return new ErorResult(Messages.PriceEror);
+            
             }
         }
     }
