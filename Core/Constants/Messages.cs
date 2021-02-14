@@ -12,6 +12,7 @@ namespace Core.Constants
         public static string PriceEror = "Hatali ucret girisi";
         public static string ProductUpdated = "Urun Guncellendi";
         public static string NameEror = "Isim hatasi";
+        public static string ReturnDateEror = "Urun daha once kiralanmmis";
 
     }
 }
