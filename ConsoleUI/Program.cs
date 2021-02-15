@@ -25,6 +25,7 @@ namespace ConsoleUI
             //GetcarDetails(carManager);
             RentalManager rentalManager = new RentalManager(new EfRentalDal());
             rentalManager.Add(rental5);
+            Console.WriteLine(rentalManager.Add(rental5).Message);
             //rentalManager.Add(rental3);
             //rentalManager.Add(rental4);
             foreach (var item in rentalManager.GetRentalDetails().Data)
