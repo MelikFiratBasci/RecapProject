@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.Constants;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
@@ -20,30 +21,52 @@ namespace Business.Concrete
 
         public IResult Add(User entity)
         {
+            var result = _userDal.Get(c => c.UserId == entity.UserId);
+            if (result!=null)
+            {
+                return new ErorResult(Messages.IdEror);
+            }
             _userDal.Add(entity);
-            return new SuccessResult();
+            return new SuccessResult(Messages.ProductAdded);
         }
 
         public IResult Delete(User entity)
         {
+            var result = _userDal.Get(c => c.UserId == entity.UserId);
+            if (result ==null)
+            {
+                return new ErorResult(Messages.IdEror);
+            }
             _userDal.Delete(entity);
-            return new SuccessResult();      
+            return new SuccessResult(Messages.ProductDeleted);      
         }
 
-        public IDataResult<User> Get(int Id)
+        public IDataResult<User> Get(int id)
         {
-            return new SuccessDataResult<User>(_userDal.Get(u => u.UserId == Id));
+            var result = _userDal.Get(c => c.UserId == id);
+            if (result==null)
+            {
+                return new ErorDataResult<User>(Messages.IdEror);
+            }
+            return new SuccessDataResult<User>(result,Messages.EntitiesListed);
         }
 
         public IDataResult<List<User>> GetAll()
         {
-            return new SuccessDataResult <List<User>>(_userDal.GetAll());
+            var result = _userDal.GetAll();
+          
+            return new SuccessDataResult <List<User>>(result,Messages.EntitiesListed);
         }
 
         public IResult Update(User entity)
         {
+            var result = _userDal.Get(c => c.UserId == entity.UserId);
+            if (result == null)
+            {
+                return new ErorResult(Messages.IdEror);
+            }
             _userDal.Update(entity);
-            return new SuccessResult();    
+            return new SuccessResult(Messages.ProductUpdated);    
         }
     }
 }

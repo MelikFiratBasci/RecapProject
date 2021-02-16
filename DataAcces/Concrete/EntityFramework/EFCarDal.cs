@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DataAcces.Concrete.EntityFramework
 {
-    public class EFCarDal : EfEntityRepositoryBase<Car, MyRentaCarSqlServerContext>, ICarDal
+    public class EfCarDal : EfEntityRepositoryBase<Car, MyRentaCarSqlServerContext>, ICarDal
     {
         public List<CarDetailDto> GetCarDetails()
         {

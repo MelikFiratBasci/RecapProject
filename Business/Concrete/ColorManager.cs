@@ -1,12 +1,10 @@
 ﻿using Business.Abstract;
-using Core.Constants;
+using Business.Constants;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
 using Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Business.Concrete
 {
@@ -21,10 +19,11 @@ namespace Business.Concrete
 
         public IResult Add(Color entity)
         {
-            if (_colorDal.Get(c => c.ColorId == entity.ColorId) == null)
+            var result = _colorDal.Get(c => c.ColorId == entity.ColorId);
+            if (result == null)
             {
                 _colorDal.Add(entity);
-                return new SuccessResult();
+                return new SuccessResult(Messages.ProductAdded);
             }
             else
             {
@@ -34,38 +33,42 @@ namespace Business.Concrete
 
         public IResult Delete(Color entity)
         {
-            if (_colorDal.Get(c => c.ColorId == entity.ColorId) == null)
+            var result = _colorDal.Get(c => c.ColorId == entity.ColorId);
+            if (result == null)
             {
                 return new ErorResult(Messages.IdEror);
             }
             else
             {
                 _colorDal.Delete(entity);
-                return new SuccessResult();
+                return new SuccessResult(Messages.ProductDeleted);
             }
         }
 
         public IDataResult<Color>Get(int Id)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(c => c.ColorId == Id));
+            var result = _colorDal.Get(c => c.ColorId == Id );
+            return new SuccessDataResult<Color>(result,Messages.EntitiesListed);
         }
 
         public IDataResult<List<Color>> GetAll()
-        {
-            return new SuccessDataResult<List<Color>>( _colorDal.GetAll());
+        {   
+            var result = _colorDal.GetAll();
+            return new SuccessDataResult<List<Color>>( result);
 
         }
 
         public IResult Update(Color entity)
         {
-            if (_colorDal.Get(c=> c.ColorId == entity.ColorId) == null)
+            var result = _colorDal.Get(c => c.ColorId == entity.ColorId);
+            if (result ==  null)
             {
                 return new ErorResult(Messages.IdEror);
             }
             else
             {
                 _colorDal.Update(entity);
-                return new SuccessResult();
+                return new SuccessResult(Messages.ProductUpdated);
             }
         }
     }

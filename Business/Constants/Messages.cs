@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Core.Constants
+namespace Business.Constants
 {
     public static class Messages
     {
@@ -13,6 +13,7 @@ namespace Core.Constants
         public static string ProductUpdated = "Urun Guncellendi";
         public static string NameEror = "Isim hatasi";
         public static string ReturnDateEror = "Urun daha once kiralanmmis";
+        public static string EntitiesListed = "Listeleme Islemi Tamamlandi! ";
 
     }
 }

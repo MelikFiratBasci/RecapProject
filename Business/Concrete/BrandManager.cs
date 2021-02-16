@@ -1,13 +1,10 @@
 ﻿using Business.Abstract;
-using Core.Constants;
+using Business.Constants;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
 using Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Business.Concrete
 {
@@ -26,34 +23,43 @@ namespace Business.Concrete
             }
             else
             {
-                
-                if (_brandDal.Get(a => a.BrandId == entity.BrandId) ==null)
+                var result = _brandDal.Get(a => a.BrandId == entity.BrandId);
+                if (result ==null)
                 {
                     _brandDal.Add(entity);
-                    return new SuccessResult();
+                    return new SuccessResult(Messages.ProductAdded);
 
                 }
-                else
-                {
+                
                     return new ErorResult(Messages.IdEror);
-                }
             }
         }
 
         public IResult Delete(Brand entity)
         {
+            var result = _brandDal.Get(a => a.BrandId == entity.BrandId);
+            if (result == null )
+            {
+                return new ErorResult(Messages.IdEror);
+            }
             _brandDal.Delete(entity);
-            return new SuccessResult();
+            return new SuccessResult(Messages.ProductDeleted);
         }
 
         public IDataResult<Brand> Get(int Id)
         {
-            return new SuccessDataResult<Brand>( _brandDal.Get(b =>b.BrandId==Id ));
+            var result = _brandDal.Get(b => b.BrandId == Id);
+            if (result == null)
+            {
+                return new ErorDataResult<Brand>(Messages.IdEror);
+            }
+            return new SuccessDataResult<Brand>(result,Messages.EntitiesListed);
         }
 
         public IDataResult<List<Brand>> GetAll()
         {
-            return new SuccessDataResult<List<Brand>>(_brandDal.GetAll());
+            var result = _brandDal.GetAll();
+            return new SuccessDataResult<List<Brand>>(result,Messages.EntitiesListed);
 
         }
 

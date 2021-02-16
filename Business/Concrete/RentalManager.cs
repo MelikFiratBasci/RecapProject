@@ -1,14 +1,11 @@
 ﻿using Business.Abstract;
-using Core.Constants;
+using Business.Constants;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
 using Entity.Concrete;
 using Entity.DTOs;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Business.Concrete
 {
@@ -21,61 +18,77 @@ namespace Business.Concrete
         }
         public IResult Add(Rental entity)
         {
-            
-            var temp = _rentalDal.Get(c => c.CarId == entity.CarId);
-            if (temp != null)
+
+            var result = _rentalDal.Get(c => c.CarId == entity.CarId);
+            if (result != null)
             {
-                if (temp.ReturnDate == null)
+                if (result.ReturnDate == null)
                 {
-                    
+
                     return new ErorResult(Messages.ReturnDateEror);
-                    
+
                 }
                 else
                 {
-                   
+
                     _rentalDal.Add(entity);
-                    return new SuccessResult();
+                    return new SuccessResult(Messages.ProductAdded);
                 }
 
             }
             else
             {
                 _rentalDal.Add(entity);
-                return new SuccessResult();
+                return new SuccessResult(Messages.ProductAdded);
             }
-           
-            
-           
+
+
+
         }
 
         public IResult Delete(Rental entity)
         {
-            _rentalDal.Delete(entity);
-            return new SuccessResult();
+            var result = _rentalDal.Get(c => c.RentalId == entity.RentalId);
+            if (result == null)
+            {
+                return new ErorResult(Messages.IdEror);
+            }
+            _rentalDal.Delete(result);
+            return new SuccessResult(Messages.ProductDeleted);
         }
 
-        public IDataResult<Rental> Get(int Id)
+        public IDataResult<Rental> Get(int id)
         {
-            return new SuccessDataResult<Rental>(_rentalDal.Get(r => r.CarId == Id));
+            var result = _rentalDal.Get(c => c.RentalId == id);
+            if (result == null)
+            {
+                return new ErorDataResult<Rental>(Messages.IdEror);                
+            }
+            return new SuccessDataResult<Rental>(result, Messages.EntitiesListed);
         }
 
         public IDataResult<List<Rental>> GetAll()
         {
-            return new SuccessDataResult<List<Rental>>(_rentalDal.GetAll());
+            var result = _rentalDal.GetAll();
+            return new SuccessDataResult<List<Rental>>(result, Messages.EntitiesListed);
         }
 
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
+            var result = _rentalDal.GetRentalDetails(); 
+            return new SuccessDataResult<List<RentalDetailDto>>(result,Messages.EntitiesListed);
 
-            return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails());
-           
         }
 
         public IResult Update(Rental entity)
         {
-            _rentalDal.Update(entity);
-            return new SuccessResult();
+            var result = _rentalDal.Get(c => c.RentalId == entity.RentalId);
+            if (result == null)
+            {
+                return new ErorResult(Messages.IdEror);
+            }
+            _rentalDal.Update(result);
+            return new SuccessResult(Messages.ProductUpdated);
         }
 
     }
