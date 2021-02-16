@@ -15,7 +15,7 @@
 //        //public InMemoryProductDal()
 //        //{
 //        //    _cars = new List<Car>
-//        //    {
+//        //    {;;;
 //        //        new Car{Id=1 , CategoryId=1 , DailyPrice=25,Description= "klimali",ModelYear=2010},
 //        //        new Car{Id=2 , CategoryId=2 , DailyPrice=35,Description= "klimali",ModelYear=2017},
 //        //        new Car{Id=3 , CategoryId=1 , DailyPrice=50,Description= "klimali",ModelYear=2018},
