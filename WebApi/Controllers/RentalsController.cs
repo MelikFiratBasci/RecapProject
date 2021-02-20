@@ -19,7 +19,7 @@ namespace WebApi.Controllers
         {
             _rentalService = rentalService;
         }
-
+        [HttpPost("add")]
         public IActionResult Add(Rental rental)
         {
             var result = _rentalService.Add(rental);

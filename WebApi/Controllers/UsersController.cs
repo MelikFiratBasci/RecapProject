@@ -19,7 +19,7 @@ namespace WebApi.Controllers
         {
             _userService = userService;
         }
-  
+        [HttpPost("add")]
         public IActionResult Add(User user)
         {
             var result = _userService.Add(user);

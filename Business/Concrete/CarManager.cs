@@ -1,10 +1,14 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
 using Entity.Concrete;
 using Entity.DTOs;
+using FluentValidation;
 using System.Collections.Generic;
 
 namespace Business.Concrete
@@ -17,36 +21,28 @@ namespace Business.Concrete
             _carDal = carDal;
         }
 
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car entity)
         {
-
-            if (entity.DailyPrice > 0)
+            var result = _carDal.Get(a => a.Id == entity.Id);
+            if (result == null)
             {
 
-                if (_carDal.Get(a => a.Id == entity.Id) == null)
-                {
+                _carDal.Add(entity);
 
-                    _carDal.Add(entity);
-                   
-                    return new SuccessResult(Messages.ProductAdded);
-                }
-                else
-                {
-                    return new ErorResult(Messages.IdEror);
-                }
+                return new SuccessResult(Messages.ProductAdded);
             }
             else
             {
-
-                return new SuccessResult(Messages.PriceEror);
+                return new ErorResult(Messages.IdEror);
             }
+
         }
 
         public IResult Delete(Car entity)
         {
-            
-            if (_carDal.Get(c => c.Id ==entity.Id ) == null)
+            var result = _carDal.Get(a => a.Id == entity.Id);
+            if (result == null)
             {
                 return new ErorResult(Messages.IdEror);
             }
@@ -56,32 +52,32 @@ namespace Business.Concrete
             }
         }
 
-      
+
 
         public IDataResult<Car> Get(int Id)
         {
             var result = _carDal.Get(c => c.Id == Id);
-            if (result!=null)
+            if (result != null)
             {
-                return new SuccessDataResult<Car>(result,Messages.EntitiesListed);
+                return new SuccessDataResult<Car>(result, Messages.EntitiesListed);
             }
             return new ErorDataResult<Car>(Messages.IdEror);
-            
+
         }
 
         public IDataResult<List<Car>> GetAll()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.EntitiesListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.EntitiesListed);
         }
         public IDataResult<List<Car>> GetByBrandId(int brandId)
         {
             var result = _carDal.GetAll(c => c.BrandId == brandId);
-            if (result.Count ==  0 )
+            if (result.Count == 0)
             {
                 return new ErorDataResult<List<Car>>(Messages.IdEror);
             }
-            return new SuccessDataResult<List<Car>>(result,Messages.EntitiesListed);
-        } 
+            return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
+        }
         public IDataResult<List<Car>> GetByColorId(int colorId)
         {
             var result = _carDal.GetAll(c => c.ColorId == colorId);
@@ -89,8 +85,8 @@ namespace Business.Concrete
             {
                 return new ErorDataResult<List<Car>>(Messages.IdEror);
             }
-            return new SuccessDataResult<List<Car>>(result,Messages.EntitiesListed);
-          
+            return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
+
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -98,9 +94,11 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
 
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car entity)
         {
-            if (entity.DailyPrice>0)
+            var result = _carDal.Get(a => a.Id == entity.Id);
+            if (result == null)
             {
                 _carDal.Update(entity);
                 return new SuccessResult(Messages.ProductUpdated);
@@ -108,7 +106,7 @@ namespace Business.Concrete
             else
             {
                 return new ErorResult(Messages.PriceEror);
-            
+
             }
         }
     }

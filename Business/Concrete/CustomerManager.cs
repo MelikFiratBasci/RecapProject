@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
@@ -17,6 +19,7 @@ namespace Business.Concrete
         {
             _customerDal = customerDal;
         }
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Add(Customer entity)
         {
             var result = _customerDal.Get(c => c.CustomerId == entity.CustomerId);
@@ -24,7 +27,7 @@ namespace Business.Concrete
             {
                 return new ErorResult(Messages.IdEror);
             }
-            else if (_customerDal.Get(c => c.UserId == entity.UserId)!=null)
+            else if (_customerDal.Get(c => c.UserId == entity.UserId) != null)
             {
                 return new ErorResult(Messages.IdEror);
 
@@ -51,15 +54,15 @@ namespace Business.Concrete
             {
                 return new ErorDataResult<Customer>(Messages.IdEror);
             }
-            return new SuccessDataResult<Customer>(result,Messages.EntitiesListed);
+            return new SuccessDataResult<Customer>(result, Messages.EntitiesListed);
         }
 
         public IDataResult<List<Customer>> GetAll()
         {
             var result = _customerDal.GetAll();
-            return new SuccessDataResult<List<Customer>>(result,Messages.EntitiesListed);
+            return new SuccessDataResult<List<Customer>>(result, Messages.EntitiesListed);
         }
-
+        [ValidationAspect(typeof(CustomerValidator))]
         public IResult Update(Customer entity)
         {
             var result = _customerDal.Get(c => c.CustomerId == entity.CustomerId);
