@@ -25,11 +25,11 @@ namespace Business.Concrete
             var result = _customerDal.Get(c => c.CustomerId == entity.CustomerId);
             if (result != null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             else if (_customerDal.Get(c => c.UserId == entity.UserId) != null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
 
             }
             _customerDal.Add(entity);
@@ -41,7 +41,7 @@ namespace Business.Concrete
             var result = _customerDal.Get(c => c.CustomerId == entity.CustomerId);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _customerDal.Delete(entity);
             return new SuccessResult(Messages.ProductDeleted);
@@ -68,7 +68,7 @@ namespace Business.Concrete
             var result = _customerDal.Get(c => c.CustomerId == entity.CustomerId);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _customerDal.Update(entity);
             return new SuccessResult();

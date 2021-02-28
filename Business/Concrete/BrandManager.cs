@@ -29,7 +29,7 @@ namespace Business.Concrete
 
             }
 
-            return new ErorResult(Messages.IdEror);
+            return new ErrorResult(Messages.IdEror);
 
         }
 
@@ -38,7 +38,7 @@ namespace Business.Concrete
             var result = _brandDal.Get(a => a.BrandId == entity.BrandId);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _brandDal.Delete(entity);
             return new SuccessResult(Messages.ProductDeleted);

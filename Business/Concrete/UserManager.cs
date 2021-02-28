@@ -26,7 +26,7 @@ namespace Business.Concrete
             var result = _userDal.Get(c => c.UserId == entity.UserId);
             if (result != null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _userDal.Add(entity);
             return new SuccessResult(Messages.ProductAdded);
@@ -37,7 +37,7 @@ namespace Business.Concrete
             var result = _userDal.Get(c => c.UserId == entity.UserId);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _userDal.Delete(entity);
             return new SuccessResult(Messages.ProductDeleted);
@@ -65,7 +65,7 @@ namespace Business.Concrete
             var result = _userDal.Get(c => c.UserId == entity.UserId);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _userDal.Update(entity);
             return new SuccessResult(Messages.ProductUpdated);

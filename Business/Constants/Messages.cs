@@ -15,5 +15,10 @@ namespace Business.Constants
         public static string ReturnDateEror = "Urun daha once kiralanmmis";
         public static string EntitiesListed = "Listeleme Islemi Tamamlandi! ";
 
+        public static string CarImageLimitExceeded = "Araba resim limiti asildi";
+
+        public static string UnsupportedMediaType = "Desteklenmeyen dosya turu";
+
+        public static string CheckIdOrPath = "Id yi veya pathi kontrol edin"; 
     }
 }

@@ -34,7 +34,7 @@ namespace Business.Concrete
             }
             else
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
 
         }
@@ -44,7 +44,7 @@ namespace Business.Concrete
             var result = _carDal.Get(a => a.Id == entity.Id);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             else
             {
@@ -105,7 +105,7 @@ namespace Business.Concrete
             }
             else
             {
-                return new ErorResult(Messages.PriceEror);
+                return new ErrorResult(Messages.PriceEror);
 
             }
         }

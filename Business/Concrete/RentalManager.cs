@@ -28,7 +28,7 @@ namespace Business.Concrete
                 if (result.ReturnDate == null)
                 {
 
-                    return new ErorResult(Messages.ReturnDateEror);
+                    return new ErrorResult(Messages.ReturnDateEror);
 
                 }
                 else
@@ -54,7 +54,7 @@ namespace Business.Concrete
             var result = _rentalDal.Get(c => c.RentalId == entity.RentalId);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _rentalDal.Delete(result);
             return new SuccessResult(Messages.ProductDeleted);
@@ -88,7 +88,7 @@ namespace Business.Concrete
             var result = _rentalDal.Get(c => c.RentalId == entity.RentalId);
             if (result == null)
             {
-                return new ErorResult(Messages.IdEror);
+                return new ErrorResult(Messages.IdEror);
             }
             _rentalDal.Update(result);
             return new SuccessResult(Messages.ProductUpdated);
