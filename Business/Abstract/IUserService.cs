@@ -1,4 +1,5 @@
 ﻿using Core.Business;
+using Core.Entities.Concrete;
 using Core.Utilities.Results;
 using Entity.Concrete;
 using System;
@@ -9,10 +10,8 @@ namespace Business.Abstract
 {
     public interface IUserService
     {
-        IDataResult<User> Get(int Id);
-        IDataResult<List<User>> GetAll();
-        IResult Add(User entity);
-        IResult Update(User entity);
-        IResult Delete(User entity);
+        IDataResult<List<OperationClaim>> GetClaims(User user);
+        IResult Add(User user);
+        IDataResult<User> GetByMail(string mail);
     }
 }
