@@ -1,11 +1,8 @@
 ﻿using Core.DataAccess.EntityFramework;
 using Core.Entities.Concrete;
 using DataAcces.Abstract;
-using Entity.Concrete;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Linq
+using System.Linq;
 
 namespace DataAcces.Concrete.EntityFramework
 {
