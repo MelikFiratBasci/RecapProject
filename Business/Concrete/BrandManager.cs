@@ -51,7 +51,7 @@ namespace Business.Concrete
             var result = _brandDal.Get(b => b.BrandId == Id);
             if (result == null)
             {
-                return new ErorDataResult<Brand>(Messages.IdEror);
+                return new ErrorDataResult<Brand>(Messages.IdEror);
             }
             return new SuccessDataResult<Brand>(result, Messages.EntitiesListed);
         }

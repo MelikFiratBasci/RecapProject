@@ -43,11 +43,11 @@ namespace Business.Concrete
             var userToCheck = _userService.GetByMail(userForLoginDto.Email);
             if (userToCheck == null)
             {
-                return new ErorDataResult<User>(Messages.UserNotFound);
+                return new ErrorDataResult<User>(Messages.UserNotFound);
             }
             if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.Data.PasswordHash, userToCheck.Data.PasswordSalt))
             {
-                return new ErorDataResult<User>(Messages.WrongPassword);
+                return new ErrorDataResult<User>(Messages.WrongPassword);
             }
             return new SuccessDataResult<User>(userToCheck.Data, Messages.LoginSuccessful);
         }

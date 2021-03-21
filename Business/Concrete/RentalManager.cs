@@ -65,7 +65,7 @@ namespace Business.Concrete
             var result = _rentalDal.Get(c => c.RentalId == id);
             if (result == null)
             {
-                return new ErorDataResult<Rental>(Messages.IdEror);                
+                return new ErrorDataResult<Rental>(Messages.IdEror);                
             }
             return new SuccessDataResult<Rental>(result, Messages.EntitiesListed);
         }

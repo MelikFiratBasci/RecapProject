@@ -62,7 +62,7 @@ namespace Business.Concrete
             {
                 return new SuccessDataResult<Car>(result, Messages.EntitiesListed);
             }
-            return new ErorDataResult<Car>(Messages.IdEror);
+            return new ErrorDataResult<Car>(Messages.IdEror);
 
         }
         [SecuredOperation("get,admin")]
@@ -76,7 +76,7 @@ namespace Business.Concrete
             var result = _carDal.GetAll(c => c.BrandId == brandId);
             if (result.Count == 0)
             {
-                return new ErorDataResult<List<Car>>(Messages.IdEror);
+                return new ErrorDataResult<List<Car>>(Messages.IdEror);
             }
             return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
         }
@@ -86,7 +86,7 @@ namespace Business.Concrete
             var result = _carDal.GetAll(c => c.ColorId == colorId);
             if (result.Count == 0)
             {
-                return new ErorDataResult<List<Car>>(Messages.IdEror);
+                return new ErrorDataResult<List<Car>>(Messages.IdEror);
             }
             return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
 

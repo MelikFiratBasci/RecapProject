@@ -52,7 +52,7 @@ namespace Business.Concrete
             var result = _customerDal.Get(c => c.CustomerId == Id);
             if (result == null)
             {
-                return new ErorDataResult<Customer>(Messages.IdEror);
+                return new ErrorDataResult<Customer>(Messages.IdEror);
             }
             return new SuccessDataResult<Customer>(result, Messages.EntitiesListed);
         }
