@@ -28,6 +28,10 @@ namespace Business.Concrete
         public IDataResult<User> GetByMail(string mail)
         {
             var result = _userDal.Get(u => u.Email == mail);
+            if (result == null)
+            {
+                return new ErrorDataResult<User>();
+            }
             return new SuccessDataResult<User>(result);
         }
         

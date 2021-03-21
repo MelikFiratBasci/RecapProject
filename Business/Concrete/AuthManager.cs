@@ -62,7 +62,7 @@ namespace Business.Concrete
 
         public IResult UserExists(string mail)
         {
-            if (_userService.GetByMail(mail) != null)
+            if (_userService.GetByMail(mail).Success)
             {
                 return new SuccessResult(Messages.UserExist);
             }
