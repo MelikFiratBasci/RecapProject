@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -20,6 +21,7 @@ namespace Business.Concrete
         {
             _carImageDal = carImageDal;
         }
+        [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Add(IFormFile formFile, CarImage entity)
         {
@@ -36,6 +38,7 @@ namespace Business.Concrete
             return new SuccessResult();
 
         }
+        [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         public IResult Update(IFormFile formFile, CarImage entity)
         {
@@ -53,6 +56,7 @@ namespace Business.Concrete
             return new SuccessResult();
 
         }
+        [SecuredOperation("car.delete,admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Delete(CarImage entity)
         {
@@ -65,19 +69,19 @@ namespace Business.Concrete
             _carImageDal.Delete(entity);
             return new SuccessResult();
         }
-
+        [SecuredOperation("get,admin")]
         public IDataResult<CarImage> Get(int Id)
         {
             var result = _carImageDal.Get(c => c.ImageId == Id);
             return new SuccessDataResult<CarImage>(result);
         }
-
+        [SecuredOperation("get,admin")]
         public IDataResult<List<CarImage>> GetAllByCarId(int id)
         {
 
             return new SuccessDataResult<List<CarImage>>(CheckIfCarHaveNoImage(id));
         }
-       
+        [SecuredOperation("get,admin")]
         public IDataResult<List<CarImage>> GetAll()
         {
             var result = _carImageDal.GetAll();

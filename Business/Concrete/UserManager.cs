@@ -30,10 +30,28 @@ namespace Business.Concrete
             var result = _userDal.Get(u => u.Email == mail);
             return new SuccessDataResult<User>(result);
         }
+        
+        [ValidationAspect(typeof(UserValidator))]
         public IResult Add(User user)
         {
             _userDal.Add(user);
             return new SuccessResult();
+        }
+        public IResult Delete(User user)
+        {
+            _userDal.Delete(user);
+            return new SuccessResult();
+        }
+        [ValidationAspect(typeof(UserValidator))]
+        public IResult Update(User user)
+        {
+            _userDal.Update(user);
+            return new SuccessResult();
+        }
+        public IDataResult<List<User>> GetAll()
+        {
+            var result = _userDal.GetAll();
+            return new SuccessDataResult<List<User>>(result);
         }
 
 

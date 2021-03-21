@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -17,6 +18,7 @@ namespace Business.Concrete
         {
             _brandDal = brandDal;
         }
+        [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand entity)
         {
@@ -32,7 +34,7 @@ namespace Business.Concrete
             return new ErrorResult(Messages.IdEror);
 
         }
-
+        [SecuredOperation("car.delete,admin")]
         public IResult Delete(Brand entity)
         {
             var result = _brandDal.Get(a => a.BrandId == entity.BrandId);
@@ -43,7 +45,7 @@ namespace Business.Concrete
             _brandDal.Delete(entity);
             return new SuccessResult(Messages.ProductDeleted);
         }
-
+        [SecuredOperation("get,admin")]
         public IDataResult<Brand> Get(int Id)
         {
             var result = _brandDal.Get(b => b.BrandId == Id);
@@ -53,6 +55,7 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<Brand>(result, Messages.EntitiesListed);
         }
+        [SecuredOperation("get,admin")]
 
         public IDataResult<List<Brand>> GetAll()
         {
@@ -60,6 +63,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Brand>>(result, Messages.EntitiesListed);
 
         }
+        [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Update(Brand entity)
         {

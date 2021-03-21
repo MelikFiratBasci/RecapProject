@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -20,7 +21,7 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-
+        [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car entity)
         {
@@ -38,7 +39,7 @@ namespace Business.Concrete
             }
 
         }
-
+        [SecuredOperation("car.delete,admin")]
         public IResult Delete(Car entity)
         {
             var result = _carDal.Get(a => a.Id == entity.Id);
@@ -53,7 +54,7 @@ namespace Business.Concrete
         }
 
 
-
+        [SecuredOperation("get,admin")]
         public IDataResult<Car> Get(int Id)
         {
             var result = _carDal.Get(c => c.Id == Id);
@@ -64,11 +65,12 @@ namespace Business.Concrete
             return new ErorDataResult<Car>(Messages.IdEror);
 
         }
-
+        [SecuredOperation("get,admin")]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.EntitiesListed);
         }
+        [SecuredOperation("get,admin")]
         public IDataResult<List<Car>> GetByBrandId(int brandId)
         {
             var result = _carDal.GetAll(c => c.BrandId == brandId);
@@ -78,6 +80,7 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
         }
+        [SecuredOperation("get,admin")]
         public IDataResult<List<Car>> GetByColorId(int colorId)
         {
             var result = _carDal.GetAll(c => c.ColorId == colorId);
@@ -88,12 +91,12 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
 
         }
-
+        [SecuredOperation("get,admin")]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
-
+        [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car entity)
         {
