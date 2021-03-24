@@ -5,6 +5,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.Utilities.Business;
@@ -44,6 +45,7 @@ namespace Business.Concrete
         [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarImageValidator))]
         [CacheRemoveAspect("ICarImageService.Get")]
+        [TransactionScopeAspect]
         public IResult Update(IFormFile formFile, CarImage entity)
         {
             IResult result = BusinessRules.Run(CheckIfFileTypeUnsupported(formFile),

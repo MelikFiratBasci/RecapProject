@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.Utilities.Results;
@@ -87,6 +88,7 @@ namespace Business.Concrete
         }
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
+        [TransactionScopeAspect]
         public IResult Update(Rental entity)
         {
             var result = _rentalDal.Get(c => c.RentalId == entity.RentalId);

@@ -3,6 +3,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.Utilities.Results;
@@ -39,6 +40,7 @@ namespace Business.Concrete
         }
         [CacheRemoveAspect("IBrandService.Get")]
         [SecuredOperation("car.delete,admin")]
+        [TransactionScopeAspect]
         public IResult Delete(Brand entity)
         {
             var result = _brandDal.Get(a => a.BrandId == entity.BrandId);
@@ -71,6 +73,7 @@ namespace Business.Concrete
         [CacheRemoveAspect("IBrandService.Get")]
         [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(BrandValidator))]
+        [TransactionScopeAspect]
         public IResult Update(Brand entity)
         {
             _brandDal.Update(entity);

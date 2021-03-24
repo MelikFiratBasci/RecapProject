@@ -2,6 +2,7 @@
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.Utilities.Results;
@@ -67,6 +68,7 @@ namespace Business.Concrete
         }
         [ValidationAspect(typeof(CustomerValidator))]
         [CacheRemoveAspect("ICustomerService.Get")]
+        [TransactionScopeAspect]
         public IResult Update(Customer entity)
         {
             var result = _customerDal.Get(c => c.CustomerId == entity.CustomerId);
