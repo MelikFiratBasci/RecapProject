@@ -2,7 +2,9 @@
 using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
@@ -23,6 +25,7 @@ namespace Business.Concrete
         }
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car entity)
         {
             var result = _carDal.Get(a => a.Id == entity.Id);
@@ -40,6 +43,7 @@ namespace Business.Concrete
 
         }
         [SecuredOperation("car.delete,admin")]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Delete(Car entity)
         {
             var result = _carDal.Get(a => a.Id == entity.Id);
@@ -55,6 +59,7 @@ namespace Business.Concrete
 
 
         [SecuredOperation("get,admin")]
+        [CacheAspect]
         public IDataResult<Car> Get(int Id)
         {
             var result = _carDal.Get(c => c.Id == Id);
@@ -66,11 +71,13 @@ namespace Business.Concrete
 
         }
         [SecuredOperation("get,admin")]
+        [CacheAspect]
         public IDataResult<List<Car>> GetAll()
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.EntitiesListed);
         }
         [SecuredOperation("get,admin")]
+        [CacheAspect]
         public IDataResult<List<Car>> GetByBrandId(int brandId)
         {
             var result = _carDal.GetAll(c => c.BrandId == brandId);
@@ -81,6 +88,7 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
         }
         [SecuredOperation("get,admin")]
+        [CacheAspect]
         public IDataResult<List<Car>> GetByColorId(int colorId)
         {
             var result = _carDal.GetAll(c => c.ColorId == colorId);
@@ -92,12 +100,14 @@ namespace Business.Concrete
 
         }
         [SecuredOperation("get,admin")]
+        [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
         [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarValidator))]
+        [CacheRemoveAspect("ICarService.Get")]
         public IResult Update(Car entity)
         {
             var result = _carDal.Get(a => a.Id == entity.Id);

@@ -1,7 +1,9 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
@@ -19,6 +21,7 @@ namespace Business.Concrete
             _rentalDal = rentalDal;
         }
         [ValidationAspect(typeof(RentalValidator))]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Add(Rental entity)
         {
 
@@ -48,7 +51,7 @@ namespace Business.Concrete
 
 
         }
-
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Delete(Rental entity)
         {
             var result = _rentalDal.Get(c => c.RentalId == entity.RentalId);
@@ -59,30 +62,31 @@ namespace Business.Concrete
             _rentalDal.Delete(result);
             return new SuccessResult(Messages.ProductDeleted);
         }
-
+        [CacheAspect]
         public IDataResult<Rental> Get(int id)
         {
             var result = _rentalDal.Get(c => c.RentalId == id);
             if (result == null)
             {
-                return new ErrorDataResult<Rental>(Messages.IdEror);                
+                return new ErrorDataResult<Rental>(Messages.IdEror);
             }
             return new SuccessDataResult<Rental>(result, Messages.EntitiesListed);
         }
-
+        [CacheAspect]
         public IDataResult<List<Rental>> GetAll()
         {
             var result = _rentalDal.GetAll();
             return new SuccessDataResult<List<Rental>>(result, Messages.EntitiesListed);
         }
-
+        [CacheAspect]
         public IDataResult<List<RentalDetailDto>> GetRentalDetails()
         {
-            var result = _rentalDal.GetRentalDetails(); 
-            return new SuccessDataResult<List<RentalDetailDto>>(result,Messages.EntitiesListed);
+            var result = _rentalDal.GetRentalDetails();
+            return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.EntitiesListed);
 
         }
         [ValidationAspect(typeof(RentalValidator))]
+        [CacheRemoveAspect("IRentalService.Get")]
         public IResult Update(Rental entity)
         {
             var result = _rentalDal.Get(c => c.RentalId == entity.RentalId);
