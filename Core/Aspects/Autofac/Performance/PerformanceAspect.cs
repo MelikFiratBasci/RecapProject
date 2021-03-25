@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Castle.DynamicProxy;
 
-namespace Core.Aspects.Performance
+namespace Core.Aspects.Autofac.Performance
 {
     public class PerformanceAspect:MethodInterception
     {
