@@ -1,4 +1,5 @@
 ﻿using Castle.DynamicProxy;
+using Core.Constants;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Interceptors;
 using FluentValidation;
@@ -16,7 +17,7 @@ namespace Core.Aspects.Autofac.Validation
         {
             if (!typeof(IValidator).IsAssignableFrom(validatorType))
             {
-                throw new SystemException("Bu bir dogrulama sinifi degil");
+                throw new SystemException(CoreMessages.NotValidatorType);
             }
             _validatorType = validatorType;
 

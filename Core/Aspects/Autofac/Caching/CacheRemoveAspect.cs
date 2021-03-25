@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Castle.DynamicProxy;
+using Core.CrossCuttingConcerns.Caching;
 
-namespace Core.CrossCuttingConcerns.Caching.Microsoft
+namespace Core.Aspects.Autofac.Caching
+
 {
     public class CacheRemoveAspect:MethodInterception
     {
