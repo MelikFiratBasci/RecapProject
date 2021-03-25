@@ -76,21 +76,20 @@ namespace Business.Concrete
             _carImageDal.Delete(entity);
             return new SuccessResult();
         }
-        [SecuredOperation("get,admin")]
         [CacheAspect]
         public IDataResult<CarImage> Get(int Id)
         {
             var result = _carImageDal.Get(c => c.ImageId == Id);
             return new SuccessDataResult<CarImage>(result);
         }
-        [SecuredOperation("get,admin")]
+
         [CacheAspect]
         public IDataResult<List<CarImage>> GetAllByCarId(int id)
         {
 
             return new SuccessDataResult<List<CarImage>>(CheckIfCarHaveNoImage(id));
         }
-        [SecuredOperation("get,admin")]
+
         public IDataResult<List<CarImage>> GetAll()
         {
             var result = _carImageDal.GetAll();

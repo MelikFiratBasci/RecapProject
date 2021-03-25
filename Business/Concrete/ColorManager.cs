@@ -55,14 +55,14 @@ namespace Business.Concrete
             }
         }
 
-        [SecuredOperation("get,admin")]
+        
         [CacheAspect]
         public IDataResult<Color>Get(int Id)
         {
             var result = _colorDal.Get(c => c.ColorId == Id );
             return new SuccessDataResult<Color>(result,Messages.EntitiesListed);
         }
-        [SecuredOperation("get,admin")]
+        
         [CacheAspect]
         public IDataResult<List<Color>> GetAll()
         {   

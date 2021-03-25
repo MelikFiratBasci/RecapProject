@@ -15,10 +15,9 @@ namespace Core.DataAccess.EntityFramework
         public void Add(TEntity entity)
         {
             using (TContext context = new TContext())
-            {//IDisposible pattern implementation of c# 
-             //isin bittiginde garbage collector
-                var addedEntity = context.Entry(entity);//referansi yakala
-                addedEntity.State = EntityState.Added;//eklenecek nesne 
+            {
+                var addedEntity = context.Entry(entity);
+                addedEntity.State = EntityState.Added;
                 context.SaveChanges();
             }
         }
@@ -27,8 +26,8 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var deletedEntity = context.Entry(entity);//referansi yakala
-                deletedEntity.State = EntityState.Deleted;//eklenecek nesne 
+                var deletedEntity = context.Entry(entity);
+                deletedEntity.State = EntityState.Deleted;
                 context.SaveChanges();
             }
         }
@@ -57,8 +56,8 @@ namespace Core.DataAccess.EntityFramework
         {
             using (TContext context = new TContext())
             {
-                var updatedEntity = context.Entry(entity);//referansi yakala
-                updatedEntity.State = EntityState.Modified;//eklenecek nesne 
+                var updatedEntity = context.Entry(entity);
+                updatedEntity.State = EntityState.Modified;
                 context.SaveChanges();
             }
         }

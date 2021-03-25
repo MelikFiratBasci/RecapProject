@@ -52,7 +52,7 @@ namespace Business.Concrete
             return new SuccessResult(Messages.ProductDeleted);
         }
         [CacheAspect]
-        [SecuredOperation("get,admin")]
+        
         public IDataResult<Brand> Get(int Id)
         {
             var result = _brandDal.Get(b => b.BrandId == Id);
@@ -62,7 +62,6 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<Brand>(result, Messages.EntitiesListed);
         }
-        [SecuredOperation("get,admin")]
         [CacheAspect]
         public IDataResult<List<Brand>> GetAll()
         {
