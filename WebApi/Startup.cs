@@ -29,7 +29,7 @@ namespace WebApi
             services.AddCors(options =>
             {
                 options.AddPolicy("AllowOrigin",
-                                    builder => builder.WithOrigins("http://localhost:3000"));
+                                    builder => builder.WithOrigins("http://localhost:4203"));
             });
             var tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -57,6 +57,7 @@ namespace WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseCors(builder => builder.WithOrigins("http://localhost:4203").AllowAnyHeader());
 
             app.UseHttpsRedirection();
 

@@ -32,7 +32,9 @@ namespace DataAcces.Concrete.EntityFramework
                                  CustomerId = cu.CustomerId,
                                  RentDate = r.RentDate,
                                  ReturnDate = r.ReturnDate,
-                                 CarId = c.Id
+                                 CarId = c.Id,
+                                 CustomerName = $"{ u.FirstName} {u.LastName }"
+                                 
                                  
                              };
                 return result.ToList();
