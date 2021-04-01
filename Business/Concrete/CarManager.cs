@@ -105,9 +105,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
         }
         [CacheAspect]
-        public IDataResult<List<CarDetailDto>> GetCarWithDetails(int id)
+        public IDataResult<CarDetailDto> GetCarWithDetails(int id)
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c=>c.Id==id));
+            return new SuccessDataResult<CarDetailDto>(_carDal.GetCarWithDetails(c=>c.Id==id));
         }
         [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarValidator))]
