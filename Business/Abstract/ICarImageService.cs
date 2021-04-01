@@ -13,5 +13,6 @@ namespace Business.Abstract
         IResult Add(IFormFile formFile,CarImage entity);
         IResult Update(IFormFile formFile,CarImage entity);
         IResult Delete(CarImage entity);
+        void SetDefaultImage(int carId);
     }
 }

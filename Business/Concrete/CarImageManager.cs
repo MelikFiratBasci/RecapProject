@@ -135,7 +135,7 @@ namespace Business.Concrete
         }
         private List<CarImage> CheckIfCarHaveNoImage(int carId)
         {
-            string path = Environment.CurrentDirectory + @"\wwwroot\images\defaultPhoto.png";
+            string path = Environment.CurrentDirectory + @"\wwwroot\images\defaultPhoto.jpg";
             var result = _carImageDal.GetAll(c => c.CarId == carId);
             if (result.Count == 0)
             {
@@ -145,5 +145,14 @@ namespace Business.Concrete
             return result;
         }
 
+        public void SetDefaultImage(int carId)
+        {
+            string path = Environment.CurrentDirectory + @"\wwwroot\images\defaultPhoto.jpg";
+            var result = _carImageDal.GetAll(c => c.CarId == carId);
+            if (result.Count == 0)
+            {
+                _carImageDal.Add(new CarImage { CarId = carId, ImagePath = path, ImageDate = DateTime.Now });
+            }
+        }
     }
 }

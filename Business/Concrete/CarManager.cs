@@ -7,6 +7,7 @@ using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
 using Core.CrossCuttingConcerns.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
@@ -14,27 +15,30 @@ using Entity.Concrete;
 using Entity.DTOs;
 using FluentValidation;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Business.Concrete
 {
     public class CarManager : ICarService
     {
         ICarDal _carDal;
-        public CarManager(ICarDal carDal)
+        ICarImageService _carImageService;
+        public CarManager(ICarDal carDal,ICarImageService carImageService)
         {
             _carDal = carDal;
+            _carImageService = carImageService;
         }
         [SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         public IResult Add(Car entity)
         {
+            
             var result = _carDal.Get(a => a.Id == entity.Id);
             if (result == null)
             {
-
                 _carDal.Add(entity);
-
+                _carImageService.SetDefaultImage(entity.Id);
                 return new SuccessResult(Messages.ProductAdded);
             }
             else
@@ -58,7 +62,7 @@ namespace Business.Concrete
             }
         }
 
-        [CacheAspect]
+        
         public IDataResult<Car> Get(int Id)
         {
             var result = _carDal.Get(c => c.Id == Id);
@@ -74,31 +78,36 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.EntitiesListed);
         }
-        [CacheAspect]
-        public IDataResult<List<Car>> GetByBrandId(int brandId)
+        public IDataResult<List<CarDetailDto>> GetByBrandId(int brandId)
         {
-            var result = _carDal.GetAll(c => c.BrandId == brandId);
-            if (result.Count == 0)
+            var result = _carDal.GetCarDetails().Where(c=>c.BrandId==brandId).ToList();
+            if (result ==null) 
             {
-                return new ErrorDataResult<List<Car>>(Messages.IdEror);
+                return new SuccessDataResult<List<CarDetailDto>>(Messages.IdEror);
             }
-            return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.EntitiesListed);
         }
-        [CacheAspect]
-        public IDataResult<List<Car>> GetByColorId(int colorId)
+        
+        public IDataResult<List<CarDetailDto>> GetByColorId(int colorId)
         {
-            var result = _carDal.GetAll(c => c.ColorId == colorId);
-            if (result.Count == 0)
+            var result = _carDal.GetCarDetails().Where(c => c.ColorId == colorId).ToList();
+            if (result ==null)
             {
-                return new ErrorDataResult<List<Car>>(Messages.IdEror);
+                return new SuccessDataResult<List<CarDetailDto>>(Messages.IdEror);
             }
-            return new SuccessDataResult<List<Car>>(result, Messages.EntitiesListed);
+            return new SuccessDataResult<List<CarDetailDto>>(result, Messages.EntitiesListed);
 
         }
         [CacheAspect]
         public IDataResult<List<CarDetailDto>> GetCarDetails()
-        {
+        {  
+
             return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails());
+        }
+        [CacheAspect]
+        public IDataResult<List<CarDetailDto>> GetCarWithDetails(int id)
+        {
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetCarDetails(c=>c.Id==id));
         }
         [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarValidator))]

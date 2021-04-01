@@ -60,6 +60,7 @@ namespace WebApi
             app.UseCors(builder => builder.WithOrigins("http://localhost:4203").AllowAnyHeader());
 
             app.UseHttpsRedirection();
+            app.UseStaticFiles();
 
             app.UseRouting();
             app.UseAuthentication();

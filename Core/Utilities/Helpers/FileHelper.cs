@@ -18,7 +18,7 @@ namespace Core.Utilities.Helpers
 
             var result = newPath(formFile);
                 File.Move(sourcePath, result);
-                return result;
+                return result.Replace("C:\\Users\\USER\\source\\repos\\RecapProject\\WebApi\\wwwroot\\", "");
             
         }
         public static string Update(string sourcePath, IFormFile formFile)
@@ -30,7 +30,7 @@ namespace Core.Utilities.Helpers
                 stream.Flush();
             }
             File.Delete(sourcePath);
-            return path;
+            return path.Replace("C:\\Users\\USER\\source\\repos\\RecapProject\\WebApi\\wwwroot\\", "");
             
         }
 

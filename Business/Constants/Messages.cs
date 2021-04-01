@@ -34,5 +34,7 @@ namespace Business.Constants
         public static string UserExist = "Kullanici Mevcut";
 
         public static string TokenCreated = "Token Olusturuldu";
+
+        public static string DefaultImageUploaded = "varsayilan resim yuklendi";
     }
 }
