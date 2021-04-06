@@ -6,6 +6,7 @@ using Core.Aspects.Autofac.Caching;
 using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Caching.Microsoft;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using Core.Utilities.Results.Concrete;
 using DataAcces.Abstract;
@@ -22,37 +23,18 @@ namespace Business.Concrete
         {
             _rentalDal = rentalDal;
         }
-        [SecuredOperation("rental.add,admin")]
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
         public IResult Add(Rental entity)
         {
 
-            var result = _rentalDal.Get(c => c.CarId == entity.CarId);
+            IResult result = BusinessRules.Run(CheckIfCarRent(entity));
             if (result != null)
             {
-                if (result.ReturnDate == null)
-                {
-
-                    return new ErrorResult(Messages.ReturnDateEror);
-
-                }
-                else
-                {
-
-                    _rentalDal.Add(entity);
-                    return new SuccessResult(Messages.ProductAdded);
-                }
-
-            }
-            else
-            {
-                _rentalDal.Add(entity);
-                return new SuccessResult(Messages.ProductAdded);
+                return result;
             }
 
-
-
+            return new SuccessResult();
         }
 
         [SecuredOperation("rental.delete,admin")]
@@ -77,7 +59,7 @@ namespace Business.Concrete
             }
             return new SuccessDataResult<Rental>(result, Messages.EntitiesListed);
         }
-        
+
         [CacheAspect]
         public IDataResult<List<Rental>> GetAll()
         {
@@ -91,6 +73,13 @@ namespace Business.Concrete
             return new SuccessDataResult<List<RentalDetailDto>>(result, Messages.EntitiesListed);
 
         }
+
+        public IDataResult<List<RentalDetailDto>> GetRentalDetailsByCarId(int carId)
+        {
+            var result = _rentalDal.GetRentalDetails(r => r.CarId == carId);
+            return new SuccessDataResult<List<RentalDetailDto>>(result);
+        }
+
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
         [TransactionScopeAspect]
@@ -103,6 +92,15 @@ namespace Business.Concrete
             }
             _rentalDal.Update(result);
             return new SuccessResult(Messages.ProductUpdated);
+        }
+        private IResult CheckIfCarRent(Rental rental)
+        {
+            var result = _rentalDal.Get(r => r.CarId == rental.CarId);
+            if (result.ReturnDate == null || result.ReturnDate > rental.RentDate)
+            {
+                return new ErrorResult(Messages.ReturnDateEror);
+            }
+            return new SuccessResult();
         }
 
     }

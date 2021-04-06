@@ -18,7 +18,7 @@ namespace Entity.DTOs
         public string[] ImagePath { get; set; }
         public int ModelYear { get; set; }
 
-
+        public bool Available { get; set; }
 
     }
 }

@@ -35,6 +35,7 @@ namespace DataAcces.Concrete.EntityFramework
                                  BrandId = b.BrandId,
                                  ColorId = c.ColorId,
                                  ModelYear = c.ModelYear,
+                                 Available= !carSqlServerContext.Rentals.Any(r=>r.CarId==c.Id&&(r.ReturnDate==null||r.RentDate>DateTime.Now)),
                                  ImagePath = (from img in carSqlServerContext.CarImages
                                               where (c.Id == img.CarId)
                                               select img.ImagePath.Replace("C:\\Users\\USER\\source\\repos\\RecapProject\\WebApi\\wwwroot\\", "")).ToArray()
@@ -71,6 +72,7 @@ namespace DataAcces.Concrete.EntityFramework
                                  BrandId = b.BrandId,
                                  ColorId = c.ColorId,
                                  ModelYear = c.ModelYear,
+                                 Available = !carSqlServerContext.Rentals.Any(r => r.CarId == c.Id && (r.ReturnDate == null || r.RentDate > DateTime.Now)),
                                  ImagePath = (from img in carSqlServerContext.CarImages
                                               where (c.Id == img.CarId)
                                               select img.ImagePath.Replace("C:\\Users\\USER\\source\\repos\\RecapProject\\WebApi\\wwwroot\\", "")).ToArray()

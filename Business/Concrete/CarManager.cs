@@ -109,6 +109,11 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<CarDetailDto>(_carDal.GetCarWithDetails(c=>c.Id==id));
         }
+        public IDataResult<List<CarDetailDto>> GetCarsbyBrandandColor(int brandId,int colorId)
+        {
+            var result = _carDal.GetCarDetails(c => c.BrandId == brandId && c.ColorId == colorId);
+            return new SuccessDataResult<List<CarDetailDto>>(result);
+        }
         [SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]

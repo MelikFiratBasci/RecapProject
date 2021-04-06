@@ -88,6 +88,11 @@ namespace WebApi.Controllers
             var result = _carService.GetCarDetails();
             return Ok(result);
         }
-
+        [HttpGet("getcarsbyfilter")]
+        public IActionResult GetCarsByFilter (int brandId,int colorId)
+        {
+            var result = _carService.GetCarsbyBrandandColor(brandId, colorId);
+            return Ok(result);
+        }
     }
 }
