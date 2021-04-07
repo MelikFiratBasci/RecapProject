@@ -25,6 +25,7 @@ namespace Business.Concrete
         }
         [ValidationAspect(typeof(RentalValidator))]
         [CacheRemoveAspect("IRentalService.Get")]
+        [TransactionScopeAspect]
         public IResult Add(Rental entity)
         {
 
@@ -33,7 +34,7 @@ namespace Business.Concrete
             {
                 return result;
             }
-
+             _rentalDal.Add(entity);
             return new SuccessResult();
         }
 
@@ -96,7 +97,7 @@ namespace Business.Concrete
         private IResult CheckIfCarRent(Rental rental)
         {
             var result = _rentalDal.Get(r => r.CarId == rental.CarId);
-            if (result.ReturnDate == null || result.ReturnDate > rental.RentDate)
+            if (result!=null &&(result.ReturnDate == null || result.ReturnDate > rental.RentDate))
             {
                 return new ErrorResult(Messages.ReturnDateEror);
             }
