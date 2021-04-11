@@ -114,14 +114,14 @@ namespace Business.Concrete
             var result = _carDal.GetCarDetails(c => c.BrandId == brandId && c.ColorId == colorId);
             return new SuccessDataResult<List<CarDetailDto>>(result);
         }
-        [SecuredOperation("car.update,admin")]
+        //[SecuredOperation("car.update,admin")]
         [ValidationAspect(typeof(CarValidator))]
         [CacheRemoveAspect("ICarService.Get")]
         [TransactionScopeAspect]
         public IResult Update(Car entity)
         {
             var result = _carDal.Get(a => a.Id == entity.Id);
-            if (result == null)
+            if (result != null)
             {
                 _carDal.Update(entity);
                 return new SuccessResult(Messages.ProductUpdated);

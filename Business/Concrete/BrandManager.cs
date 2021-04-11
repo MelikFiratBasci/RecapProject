@@ -22,7 +22,7 @@ namespace Business.Concrete
             _brandDal = brandDal;
         }
         [CacheRemoveAspect("IBrandService.Get")]
-        [SecuredOperation("car.add,admin")]
+        //[SecuredOperation("car.add,admin")]
         [ValidationAspect(typeof(BrandValidator))]
         public IResult Add(Brand entity)
         {
